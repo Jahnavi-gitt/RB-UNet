@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "functions": {
+    "api/**/*.py": {
+      "memory": 1024,
+      "maxDuration": 15
+    },
+    "app.py": {
+      "memory": 1024,
+      "maxDuration": 15
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py?path=/api/$1" },
+    { "source": "/outputs/(.*)", "destination": "/outputs/$1" },
+    { "source": "/css/(.*)", "destination": "/ui/css/$1" },
+    { "source": "/js/(.*)", "destination": "/ui/js/$1" },
+    { "source": "/", "destination": "/ui/index.html" },
+    { "source": "/(.*)", "destination": "/ui/$1" }
+  ]
+}

@@ -30,6 +30,9 @@ kaggle.json
 *.pt
 *.ckpt
 outputs/checkpoints/*.pth
+!outputs/checkpoints/full_rb_unet_latest.pth
+!outputs/checkpoints/baseline_unet_latest.pth
+!outputs/checkpoints/best_model.pth
 
 # Logs & Temporary Execution artifacts
 logs/

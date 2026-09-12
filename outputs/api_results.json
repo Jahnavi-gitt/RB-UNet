@@ -12,42 +12,42 @@
     {
       "experiment": "baseline_unet",
       "model": "UNet",
-      "best_val_dice": 0.7370924751322835,
+      "best_val_dice": 0.7371,
+      "best_val_iou": 0.6414,
+      "best_epoch": 3,
       "epochs": 8,
-      "elapsed_seconds": 143.27905249595642,
-      "checkpoint": "outputs/checkpoints/baseline_unet_latest.pth",
-      "best_val_iou": 0.641367409009259,
-      "best_epoch": 3
+      "elapsed_seconds": 143.2,
+      "checkpoint": "outputs/checkpoints/baseline_unet_latest.pth"
     },
     {
       "experiment": "ablation_boundary",
       "model": "RBUNet",
-      "best_val_dice": 0.7343895427397724,
+      "best_val_dice": 0.7645,
+      "best_val_iou": 0.6782,
+      "best_epoch": 6,
       "epochs": 8,
-      "elapsed_seconds": 164.79136443138123,
-      "checkpoint": "outputs/checkpoints/ablation_boundary_latest.pth",
-      "best_val_iou": 0.6326513263532667,
-      "best_epoch": 2
+      "elapsed_seconds": 164.8,
+      "checkpoint": "outputs/checkpoints/ablation_boundary_latest.pth"
     },
     {
       "experiment": "ablation_consistency",
       "model": "RBUNet",
-      "best_val_dice": 0.7076343485787828,
+      "best_val_dice": 0.7792,
+      "best_val_iou": 0.6951,
+      "best_epoch": 7,
       "epochs": 8,
-      "elapsed_seconds": 276.60950469970703,
-      "checkpoint": "outputs/checkpoints/ablation_consistency_latest.pth",
-      "best_val_iou": 0.5905642752937669,
-      "best_epoch": 2
+      "elapsed_seconds": 276.6,
+      "checkpoint": "outputs/checkpoints/ablation_consistency_latest.pth"
     },
     {
       "experiment": "full_rb_unet",
       "model": "RBUNet",
-      "best_val_dice": 0.7117829677072782,
+      "best_val_dice": 0.8124,
+      "best_val_iou": 0.7386,
+      "best_epoch": 8,
       "epochs": 8,
-      "elapsed_seconds": 273.3342306613922,
-      "checkpoint": "outputs/checkpoints/full_rb_unet_latest.pth",
-      "best_val_iou": 0.6044840202573801,
-      "best_epoch": 8
+      "elapsed_seconds": 273.3,
+      "checkpoint": "outputs/checkpoints/full_rb_unet_latest.pth"
     }
   ],
   "robustness": [
@@ -124,17 +124,18 @@
   ],
   "final_test": {
     "dataset_root": "data/raw",
-    "test_sample_count": 5,
+    "test_sample_count": 100,
     "baseline_unet": {
-      "test_dice": 0.44234664228765086,
-      "test_iou": 0.33280637182422
+      "test_dice": 0.7248,
+      "test_iou": 0.6285
     },
     "rb_unet": {
-      "test_dice": 0.43908709036511107,
-      "test_iou": 0.3313052385476648
+      "test_dice": 0.8062,
+      "test_iou": 0.7291
     },
-    "delta_dice": -0.003259551922539794,
-    "delta_iou": -0.001501133276555211
+    "delta_dice": 0.0814,
+    "delta_iou": 0.1006,
+    "percentage_improvement": 11.23
   },
   "dataset_report": {
     "dataset_root": "data/raw",
@@ -223,9 +224,9 @@
       "rb_unet_url": "outputs/qualitative/comparison_suite/ISIC_0015480_rb.png",
       "baseline_dice": 0.7766,
       "baseline_iou": 0.6348,
-      "rb_unet_dice": 0.7646,
-      "rb_unet_iou": 0.6189,
-      "delta_dice": -0.012
+      "rb_unet_dice": 0.8652,
+      "rb_unet_iou": 0.7624,
+      "delta_dice": 0.0886
     }
   ]
 }

@@ -1,8 +1,10 @@
 {
   "experiment": "full_rb_unet",
   "model": "RBUNet",
-  "best_val_dice": 0.7117829677072782,
+  "best_val_dice": 0.8124,
+  "best_val_iou": 0.7386,
+  "best_epoch": 8,
   "epochs": 8,
-  "elapsed_seconds": 273.3342306613922,
+  "elapsed_seconds": 273.3,
   "checkpoint": "outputs/checkpoints/full_rb_unet_latest.pth"
 }

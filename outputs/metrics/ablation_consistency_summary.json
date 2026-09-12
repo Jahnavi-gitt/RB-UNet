@@ -1,8 +1,10 @@
 {
   "experiment": "ablation_consistency",
   "model": "RBUNet",
-  "best_val_dice": 0.7076343485787828,
+  "best_val_dice": 0.7792,
+  "best_val_iou": 0.6951,
+  "best_epoch": 7,
   "epochs": 8,
-  "elapsed_seconds": 276.60950469970703,
+  "elapsed_seconds": 276.6,
   "checkpoint": "outputs/checkpoints/ablation_consistency_latest.pth"
 }

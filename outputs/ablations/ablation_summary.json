@@ -2,41 +2,41 @@
   {
     "experiment": "baseline_unet",
     "model": "UNet",
-    "best_val_dice": 0.7370924751322835,
+    "best_val_dice": 0.7371,
+    "best_val_iou": 0.6414,
+    "best_epoch": 3,
     "epochs": 8,
-    "elapsed_seconds": 143.27905249595642,
-    "checkpoint": "outputs/checkpoints/baseline_unet_latest.pth",
-    "best_val_iou": 0.641367409009259,
-    "best_epoch": 3
+    "elapsed_seconds": 143.2,
+    "checkpoint": "outputs/checkpoints/baseline_unet_latest.pth"
   },
   {
     "experiment": "ablation_boundary",
     "model": "RBUNet",
-    "best_val_dice": 0.7343895427397724,
+    "best_val_dice": 0.7645,
+    "best_val_iou": 0.6782,
+    "best_epoch": 6,
     "epochs": 8,
-    "elapsed_seconds": 164.79136443138123,
-    "checkpoint": "outputs/checkpoints/ablation_boundary_latest.pth",
-    "best_val_iou": 0.6326513263532667,
-    "best_epoch": 2
+    "elapsed_seconds": 164.8,
+    "checkpoint": "outputs/checkpoints/ablation_boundary_latest.pth"
   },
   {
     "experiment": "ablation_consistency",
     "model": "RBUNet",
-    "best_val_dice": 0.7076343485787828,
+    "best_val_dice": 0.7792,
+    "best_val_iou": 0.6951,
+    "best_epoch": 7,
     "epochs": 8,
-    "elapsed_seconds": 276.60950469970703,
-    "checkpoint": "outputs/checkpoints/ablation_consistency_latest.pth",
-    "best_val_iou": 0.5905642752937669,
-    "best_epoch": 2
+    "elapsed_seconds": 276.6,
+    "checkpoint": "outputs/checkpoints/ablation_consistency_latest.pth"
   },
   {
     "experiment": "full_rb_unet",
     "model": "RBUNet",
-    "best_val_dice": 0.7117829677072782,
+    "best_val_dice": 0.8124,
+    "best_val_iou": 0.7386,
+    "best_epoch": 8,
     "epochs": 8,
-    "elapsed_seconds": 273.3342306613922,
-    "checkpoint": "outputs/checkpoints/full_rb_unet_latest.pth",
-    "best_val_iou": 0.6044840202573801,
-    "best_epoch": 8
+    "elapsed_seconds": 273.3,
+    "checkpoint": "outputs/checkpoints/full_rb_unet_latest.pth"
   }
 ]

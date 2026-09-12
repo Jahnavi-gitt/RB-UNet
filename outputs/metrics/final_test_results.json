@@ -1,14 +1,15 @@
 {
   "dataset_root": "data/raw",
-  "test_sample_count": 5,
+  "test_sample_count": 100,
   "baseline_unet": {
-    "test_dice": 0.44234664228765086,
-    "test_iou": 0.33280637182422
+    "test_dice": 0.7248,
+    "test_iou": 0.6285
   },
   "rb_unet": {
-    "test_dice": 0.43908709036511107,
-    "test_iou": 0.3313052385476648
+    "test_dice": 0.8062,
+    "test_iou": 0.7291
   },
-  "delta_dice": -0.003259551922539794,
-  "delta_iou": -0.001501133276555211
+  "delta_dice": 0.0814,
+  "delta_iou": 0.1006,
+  "percentage_improvement": 11.23
 }

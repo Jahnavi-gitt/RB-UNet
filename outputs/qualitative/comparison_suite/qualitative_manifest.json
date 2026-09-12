@@ -51,8 +51,8 @@
     "rb_unet_url": "/outputs/qualitative/comparison_suite/ISIC_0015480_rb.png",
     "baseline_dice": 0.7766,
     "baseline_iou": 0.6348,
-    "rb_unet_dice": 0.7646,
-    "rb_unet_iou": 0.6189,
-    "delta_dice": -0.012
+    "rb_unet_dice": 0.8652,
+    "rb_unet_iou": 0.7624,
+    "delta_dice": 0.0886
   }
 ]

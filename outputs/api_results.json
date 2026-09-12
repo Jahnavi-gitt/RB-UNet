@@ -1,0 +1,231 @@
+{
+  "status": {
+    "system": "RB-UNet Research Showcase",
+    "model_name": "RB-UNet (Static Showcase)",
+    "device": "Web Static / Showcase Mode",
+    "threshold": 0.7,
+    "best_checkpoint_exists": true,
+    "baseline_checkpoint_exists": true,
+    "showcase_mode": true
+  },
+  "ablation": [
+    {
+      "experiment": "baseline_unet",
+      "model": "UNet",
+      "best_val_dice": 0.7370924751322835,
+      "epochs": 8,
+      "elapsed_seconds": 143.27905249595642,
+      "checkpoint": "outputs/checkpoints/baseline_unet_latest.pth",
+      "best_val_iou": 0.641367409009259,
+      "best_epoch": 3
+    },
+    {
+      "experiment": "ablation_boundary",
+      "model": "RBUNet",
+      "best_val_dice": 0.7343895427397724,
+      "epochs": 8,
+      "elapsed_seconds": 164.79136443138123,
+      "checkpoint": "outputs/checkpoints/ablation_boundary_latest.pth",
+      "best_val_iou": 0.6326513263532667,
+      "best_epoch": 2
+    },
+    {
+      "experiment": "ablation_consistency",
+      "model": "RBUNet",
+      "best_val_dice": 0.7076343485787828,
+      "epochs": 8,
+      "elapsed_seconds": 276.60950469970703,
+      "checkpoint": "outputs/checkpoints/ablation_consistency_latest.pth",
+      "best_val_iou": 0.5905642752937669,
+      "best_epoch": 2
+    },
+    {
+      "experiment": "full_rb_unet",
+      "model": "RBUNet",
+      "best_val_dice": 0.7117829677072782,
+      "epochs": 8,
+      "elapsed_seconds": 273.3342306613922,
+      "checkpoint": "outputs/checkpoints/full_rb_unet_latest.pth",
+      "best_val_iou": 0.6044840202573801,
+      "best_epoch": 8
+    }
+  ],
+  "robustness": [
+    {
+      "condition": "Clean",
+      "slug": "clean",
+      "baseline_dice": 0.5749,
+      "baseline_iou": 0.4596,
+      "rb_unet_dice": 0.72,
+      "rb_unet_iou": 0.6227,
+      "delta_dice": 0.1451,
+      "delta_iou": 0.1631,
+      "input_url": "/outputs/robustness/clean/input.png",
+      "baseline_prediction_url": "/outputs/robustness/clean/baseline_prediction.png",
+      "rb_unet_prediction_url": "/outputs/robustness/clean/rb_unet_prediction.png",
+      "ground_truth_url": "/outputs/robustness/clean/ground_truth.png"
+    },
+    {
+      "condition": "Gaussian Noise",
+      "slug": "gaussian_noise",
+      "baseline_dice": 0.5319,
+      "baseline_iou": 0.4204,
+      "rb_unet_dice": 0.7219,
+      "rb_unet_iou": 0.6287,
+      "delta_dice": 0.19,
+      "delta_iou": 0.2082,
+      "input_url": "/outputs/robustness/gaussian_noise/input.png",
+      "baseline_prediction_url": "/outputs/robustness/gaussian_noise/baseline_prediction.png",
+      "rb_unet_prediction_url": "/outputs/robustness/gaussian_noise/rb_unet_prediction.png",
+      "ground_truth_url": "/outputs/robustness/gaussian_noise/ground_truth.png"
+    },
+    {
+      "condition": "Gaussian Blur",
+      "slug": "gaussian_blur",
+      "baseline_dice": 0.588,
+      "baseline_iou": 0.4735,
+      "rb_unet_dice": 0.7199,
+      "rb_unet_iou": 0.6216,
+      "delta_dice": 0.1319,
+      "delta_iou": 0.1481,
+      "input_url": "/outputs/robustness/gaussian_blur/input.png",
+      "baseline_prediction_url": "/outputs/robustness/gaussian_blur/baseline_prediction.png",
+      "rb_unet_prediction_url": "/outputs/robustness/gaussian_blur/rb_unet_prediction.png",
+      "ground_truth_url": "/outputs/robustness/gaussian_blur/ground_truth.png"
+    },
+    {
+      "condition": "Contrast Shift",
+      "slug": "contrast",
+      "baseline_dice": 0.554,
+      "baseline_iou": 0.4302,
+      "rb_unet_dice": 0.71,
+      "rb_unet_iou": 0.6079,
+      "delta_dice": 0.156,
+      "delta_iou": 0.1776,
+      "input_url": "/outputs/robustness/contrast/input.png",
+      "baseline_prediction_url": "/outputs/robustness/contrast/baseline_prediction.png",
+      "rb_unet_prediction_url": "/outputs/robustness/contrast/rb_unet_prediction.png",
+      "ground_truth_url": "/outputs/robustness/contrast/ground_truth.png"
+    },
+    {
+      "condition": "Brightness Shift",
+      "slug": "brightness",
+      "baseline_dice": 0.537,
+      "baseline_iou": 0.4282,
+      "rb_unet_dice": 0.6891,
+      "rb_unet_iou": 0.5845,
+      "delta_dice": 0.1522,
+      "delta_iou": 0.1563,
+      "input_url": "/outputs/robustness/brightness/input.png",
+      "baseline_prediction_url": "/outputs/robustness/brightness/baseline_prediction.png",
+      "rb_unet_prediction_url": "/outputs/robustness/brightness/rb_unet_prediction.png",
+      "ground_truth_url": "/outputs/robustness/brightness/ground_truth.png"
+    }
+  ],
+  "final_test": {
+    "dataset_root": "data/raw",
+    "test_sample_count": 5,
+    "baseline_unet": {
+      "test_dice": 0.44234664228765086,
+      "test_iou": 0.33280637182422
+    },
+    "rb_unet": {
+      "test_dice": 0.43908709036511107,
+      "test_iou": 0.3313052385476648
+    },
+    "delta_dice": -0.003259551922539794,
+    "delta_iou": -0.001501133276555211
+  },
+  "dataset_report": {
+    "dataset_root": "data/raw",
+    "exists": true,
+    "splits": {
+      "train_count": 60,
+      "val_count": 15,
+      "test_count": 5
+    },
+    "directories": {
+      "train_images": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1-2_Training_Input",
+      "train_masks": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1_Training_GroundTruth",
+      "val_images": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1-2_Validation_Input",
+      "val_masks": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1_Validation_GroundTruth",
+      "test_images": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1-3_Test_Input",
+      "test_masks": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1_Test_GroundTruth"
+    },
+    "orphans": {
+      "train": 0,
+      "val": 0,
+      "test": 0
+    },
+    "sample_properties": {
+      "image_dimensions": [
+        1022,
+        767
+      ],
+      "image_mode": "RGB",
+      "mask_dimensions": [
+        1022,
+        767
+      ],
+      "mask_mode": "L"
+    }
+  },
+  "qualitative": [
+    {
+      "id": "ISIC_0012255",
+      "label": "Small Focal Lesion",
+      "difficulty": "High - Subtle scale",
+      "original_url": "outputs/qualitative/comparison_suite/ISIC_0012255_orig.jpg",
+      "gt_url": "outputs/qualitative/comparison_suite/ISIC_0012255_gt.png",
+      "baseline_url": "outputs/qualitative/comparison_suite/ISIC_0012255_base.png",
+      "rb_unet_url": "outputs/qualitative/comparison_suite/ISIC_0012255_rb.png",
+      "baseline_dice": 0.3145,
+      "baseline_iou": 0.1866,
+      "rb_unet_dice": 0.9146,
+      "rb_unet_iou": 0.8426,
+      "delta_dice": 0.6001
+    },
+    {
+      "id": "ISIC_0012585",
+      "label": "Irregular Scalloped Margin",
+      "difficulty": "High - Boundary complexity",
+      "original_url": "outputs/qualitative/comparison_suite/ISIC_0012585_orig.jpg",
+      "gt_url": "outputs/qualitative/comparison_suite/ISIC_0012585_gt.png",
+      "baseline_url": "outputs/qualitative/comparison_suite/ISIC_0012585_base.png",
+      "rb_unet_url": "outputs/qualitative/comparison_suite/ISIC_0012585_rb.png",
+      "baseline_dice": 0.8171,
+      "baseline_iou": 0.6907,
+      "rb_unet_dice": 0.9077,
+      "rb_unet_iou": 0.8311,
+      "delta_dice": 0.0907
+    },
+    {
+      "id": "ISIC_0015370",
+      "label": "Challenging Asymmetric Border",
+      "difficulty": "Moderate - Multi-lobular",
+      "original_url": "outputs/qualitative/comparison_suite/ISIC_0015370_orig.jpg",
+      "gt_url": "outputs/qualitative/comparison_suite/ISIC_0015370_gt.png",
+      "baseline_url": "outputs/qualitative/comparison_suite/ISIC_0015370_base.png",
+      "rb_unet_url": "outputs/qualitative/comparison_suite/ISIC_0015370_rb.png",
+      "baseline_dice": 0.905,
+      "baseline_iou": 0.8265,
+      "rb_unet_dice": 0.9791,
+      "rb_unet_iou": 0.9591,
+      "delta_dice": 0.0741
+    },
+    {
+      "id": "ISIC_0015480",
+      "label": "Low Contrast Lesion",
+      "difficulty": "High - Faint gradient",
+      "original_url": "outputs/qualitative/comparison_suite/ISIC_0015480_orig.jpg",
+      "gt_url": "outputs/qualitative/comparison_suite/ISIC_0015480_gt.png",
+      "baseline_url": "outputs/qualitative/comparison_suite/ISIC_0015480_base.png",
+      "rb_unet_url": "outputs/qualitative/comparison_suite/ISIC_0015480_rb.png",
+      "baseline_dice": 0.7766,
+      "baseline_iou": 0.6348,
+      "rb_unet_dice": 0.7646,
+      "rb_unet_iou": 0.6189,
+      "delta_dice": -0.012
+    }
+  ]
+}

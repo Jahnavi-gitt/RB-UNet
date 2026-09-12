@@ -1,26 +1,17 @@
-# Exclude heavy ML backend code, PyTorch dependencies, and weights from Vercel deployment
-app.py
-evaluate.py
-infer.py
-run.py
-train.py
-src/
-scripts/
-tests/
-configs/
-data/
-docs/
-pyproject.toml
-requirements.txt
-setup.py
-setup.cfg
-uv.lock
+# Virtual environments & caches
 .venv/
 venv/
 __pycache__/
 .pytest_cache/
+
+# Large weights and raw data
 outputs/checkpoints/
 outputs/smoke_test_data/
 *.pth
 *.pt
 *.ckpt
+data/
+
+# Tests & internal config
+tests/
+configs/

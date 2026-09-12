@@ -1,12 +1,4 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.py" },
-    { "source": "/outputs/(.*)", "destination": "/outputs/$1" },
-    { "source": "/css/(.*)", "destination": "/ui/css/$1" },
-    { "source": "/js/(.*)", "destination": "/ui/js/$1" },
-    { "source": "/", "destination": "/ui/index.html" },
-    { "source": "/((?!api/).*)", "destination": "/ui/$1" }
-  ]
+  "cleanUrls": true
 }

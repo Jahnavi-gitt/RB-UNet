@@ -28,13 +28,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // =========================================================================
+  // BACKEND API RESOLUTION (Supports Vercel Frontend + Remote/Local Backend)
+  // =========================================================================
+  function getApiBase() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramApi = urlParams.get("api");
+      if (paramApi) {
+        localStorage.setItem("rb_unet_api_url", paramApi.replace(/\/+$/, ""));
+        return paramApi.replace(/\/+$/, "");
+      }
+    } catch (e) {}
+
+    try {
+      const stored = localStorage.getItem("rb_unet_api_url");
+      if (stored) return stored.replace(/\/+$/, "");
+    } catch (e) {}
+
+    if (window.VITE_API_URL) return window.VITE_API_URL.replace(/\/+$/, "");
+    if (window.BACKEND_API_URL) return window.BACKEND_API_URL.replace(/\/+$/, "");
+    return "";
+  }
+
+  function apiUrl(endpoint) {
+    const base = getApiBase();
+    const cleanEp = endpoint.startsWith("/") ? endpoint : "/" + endpoint;
+    return base ? `${base}${cleanEp}` : cleanEp;
+  }
+
   // System Status Check
   const statusIndicatorDot = document.getElementById("status-indicator-dot");
   const systemStatusText = document.getElementById("system-status-text");
+  const navStatus = document.querySelector(".nav-status");
+
+  if (navStatus) {
+    navStatus.style.cursor = "pointer";
+    navStatus.title = "Click to configure Python Backend API URL";
+    navStatus.addEventListener("click", () => {
+      const current = getApiBase() || "http://localhost:8000";
+      const userUrl = prompt(
+        "Enter Python RB-UNet Backend API URL:\n(e.g., https://your-backend.onrender.com or http://localhost:8000)\nLeave empty for same-origin.",
+        current
+      );
+      if (userUrl !== null) {
+        if (userUrl.trim()) {
+          localStorage.setItem("rb_unet_api_url", userUrl.trim().replace(/\/+$/, ""));
+        } else {
+          localStorage.removeItem("rb_unet_api_url");
+        }
+        systemStatusText.textContent = "Connecting...";
+        checkSystemStatus();
+        researchDataLoaded = false;
+        fetchResearchResults();
+      }
+    });
+  }
 
   async function checkSystemStatus() {
     try {
-      const resp = await fetch("/api/status");
+      const resp = await fetch(apiUrl("/api/status"));
       if (resp.ok) {
         const data = await resp.json();
         if (data.best_checkpoint_exists && data.baseline_checkpoint_exists) {
@@ -48,9 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
           systemStatusText.textContent = "Weights Pending";
           statusIndicatorDot.style.backgroundColor = "var(--accent-amber)";
         }
+      } else {
+        systemStatusText.textContent = "API Error";
+        statusIndicatorDot.style.backgroundColor = "var(--accent-amber)";
       }
     } catch (e) {
-      systemStatusText.textContent = "Offline";
+      systemStatusText.textContent = "Backend Offline";
       statusIndicatorDot.style.backgroundColor = "var(--accent-red)";
     }
   }
@@ -267,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (valMeanFgProb) valMeanFgProb.textContent = "...";
 
     try {
-      const response = await fetch("/api/segment", {
+      const response = await fetch(apiUrl("/api/segment"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: currentImageBase64 })
@@ -384,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (robStatusTag) robStatusTag.textContent = "Processing Dual Inference...";
 
     try {
-      const resp = await fetch("/api/robustness", {
+      const resp = await fetch(apiUrl("/api/robustness"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -434,7 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (researchDataLoaded && cachedResults) return;
 
     try {
-      const resp = await fetch("/api/results");
+      const resp = await fetch(apiUrl("/api/results"));
       if (!resp.ok) throw new Error("Failed to fetch /api/results");
 
       const data = await resp.json();

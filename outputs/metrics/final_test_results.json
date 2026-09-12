@@ -1,0 +1,14 @@
+{
+  "dataset_root": "data/raw",
+  "test_sample_count": 13,
+  "baseline_unet": {
+    "test_dice": 0.2003034586725511,
+    "test_iou": 0.11588357159578064
+  },
+  "rb_unet": {
+    "test_dice": 0.9108512675995191,
+    "test_iou": 0.838566729350692
+  },
+  "delta_dice": 0.710547808926968,
+  "delta_iou": 0.7226831577549113
+}

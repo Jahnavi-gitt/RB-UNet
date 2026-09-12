@@ -1,0 +1,8 @@
+{
+  "experiment": "ablation_boundary",
+  "model": "RBUNet",
+  "best_val_dice": 0.3661784286397542,
+  "epochs": 2,
+  "elapsed_seconds": 1.5922317504882812,
+  "checkpoint": "outputs/checkpoints/ablation_boundary_latest.pth"
+}

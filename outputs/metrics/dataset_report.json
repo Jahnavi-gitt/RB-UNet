@@ -1,0 +1,23 @@
+{
+  "dataset_root": "data/raw",
+  "exists": false,
+  "splits": {
+    "train_count": 0,
+    "val_count": 0,
+    "test_count": 0
+  },
+  "directories": {
+    "train_images": null,
+    "train_masks": null,
+    "val_images": null,
+    "val_masks": null,
+    "test_images": null,
+    "test_masks": null
+  },
+  "orphans": {
+    "train": 0,
+    "val": 0,
+    "test": 0
+  },
+  "sample_properties": {}
+}

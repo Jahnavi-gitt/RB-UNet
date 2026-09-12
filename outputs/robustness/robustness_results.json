@@ -1,0 +1,47 @@
+[
+  {
+    "condition": "Clean",
+    "baseline_dice": 0.2003034586725511,
+    "baseline_iou": 0.11588357159578064,
+    "rb_unet_dice": 0.9108512675995191,
+    "rb_unet_iou": 0.838566729350692,
+    "delta_dice": 0.710547808926968,
+    "delta_iou": 0.7226831577549113
+  },
+  {
+    "condition": "Gaussian Noise",
+    "baseline_dice": 0.29090232140496153,
+    "baseline_iou": 0.1827617249887495,
+    "rb_unet_dice": 0.8894646898925239,
+    "rb_unet_iou": 0.8063621199462045,
+    "delta_dice": 0.5985623684875624,
+    "delta_iou": 0.623600394957455
+  },
+  {
+    "condition": "Gaussian Blur",
+    "baseline_dice": 0.12137914717586723,
+    "baseline_iou": 0.06731166809647102,
+    "rb_unet_dice": 0.8657535100635408,
+    "rb_unet_iou": 0.7662282479269478,
+    "delta_dice": 0.7443743628876736,
+    "delta_iou": 0.6989165798304767
+  },
+  {
+    "condition": "Contrast Shift",
+    "baseline_dice": 0.0,
+    "baseline_iou": 0.0,
+    "rb_unet_dice": 0.0,
+    "rb_unet_iou": 0.0,
+    "delta_dice": 0.0,
+    "delta_iou": 0.0
+  },
+  {
+    "condition": "Brightness Shift",
+    "baseline_dice": 0.7865347298325973,
+    "baseline_iou": 0.6777863398271525,
+    "rb_unet_dice": 0.9570715178595085,
+    "rb_unet_iou": 0.9177675561764658,
+    "delta_dice": 0.1705367880269112,
+    "delta_iou": 0.23998121634931324
+  }
+]

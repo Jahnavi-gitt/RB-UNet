@@ -1,0 +1,63 @@
+# RB-UNet Master Configuration
+# Robust Boundary-Consistent U-Net for Medical Lesion Segmentation
+
+dataset:
+  # Path can be overridden via environment variable DATASET_ROOT
+  root: "data/raw"
+  image_size: 256
+  in_channels: 3
+  num_classes: 1
+  normalize_mean: [0.485, 0.456, 0.406]
+  normalize_std: [0.229, 0.224, 0.225]
+
+model:
+  name: "rb_unet" # "standard_unet" or "rb_unet"
+  features: [64, 128, 256, 512, 1024]
+  boundary_head_channels: 32
+
+loss:
+  dice_weight: 1.0
+  bce_weight: 1.0
+  boundary_weight: 0.5
+  consistency_weight: 0.5
+  epsilon: 1e-6
+
+training:
+  seed: 42
+  batch_size: 4
+  num_workers: 0
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  epochs: 30
+  patience: 8
+  save_best_only: true
+  device: "auto" # "auto", "cuda", or "cpu"
+
+corruption:
+  gaussian_noise:
+    enabled: true
+    std: 0.08
+  gaussian_blur:
+    enabled: true
+    kernel_size: 5
+    sigma: 1.5
+  contrast:
+    enabled: true
+    factor: 0.6
+  brightness:
+    enabled: true
+    offset: -0.2
+
+evaluation:
+  threshold: 0.5
+  metrics: ["dice", "iou", "boundary_f1"]
+
+paths:
+  outputs_dir: "outputs"
+  checkpoints_dir: "outputs/checkpoints"
+  metrics_dir: "outputs/metrics"
+  plots_dir: "outputs/plots"
+  qualitative_dir: "outputs/qualitative"
+  robustness_dir: "outputs/robustness"
+  ablations_dir: "outputs/ablations"
+  demo_dir: "outputs/demo"

@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches & IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Virtual Environments
+venv/
+env/
+.venv/
+
+# Large Dataset Directories & Archives
+data/
+*.zip
+*.tar
+*.tar.gz
+*.h5
+*.hdf5
+kaggle.json
+*.npy
+
+# Model Checkpoints & Large Weights
+*.pth
+*.pt
+*.ckpt
+outputs/checkpoints/*.pth
+
+# Logs & Temporary Execution artifacts
+logs/
+*.log
+.pytest_cache/
+.coverage
+htmlcov/

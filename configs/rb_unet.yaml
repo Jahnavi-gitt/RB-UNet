@@ -1,0 +1,15 @@
+# Full RB-UNet Configuration (Boundary + Consistency)
+# Experiment 4
+defaults:
+  - config.yaml
+
+model:
+  name: "rb_unet"
+  features: [64, 128, 256, 512, 1024]
+  boundary_head_channels: 32
+
+loss:
+  dice_weight: 1.0
+  bce_weight: 1.0
+  boundary_weight: 0.5
+  consistency_weight: 0.5

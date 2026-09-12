@@ -1,0 +1,14 @@
+# Baseline Standard U-Net Configuration
+# Experiment 1
+defaults:
+  - config.yaml
+
+model:
+  name: "standard_unet"
+  features: [64, 128, 256, 512, 1024]
+
+loss:
+  dice_weight: 1.0
+  bce_weight: 1.0
+  boundary_weight: 0.0
+  consistency_weight: 0.0

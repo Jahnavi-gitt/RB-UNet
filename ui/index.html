@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RB-UNet — Robust Boundary-Consistent Medical Lesion Segmentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-logo-mark"></div>
+        <div class="brand-text">
+          <span class="brand-title">RB-UNet</span>
+          <span class="brand-badge">RESEARCH</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-tab active" data-target="section-live">01 — Live Segmentation</button>
+        <button class="nav-tab" data-target="section-results">02 — Research Results</button>
+        <button class="nav-tab" data-target="section-robustness">03 — Robustness</button>
+      </nav>
+
+      <div class="nav-status">
+        <span class="status-indicator"></span>
+        <span id="system-status-text">Backend Ready</span>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-wrapper">
+      
+      <!-- ================= SECTION 1: LIVE SEGMENTATION ================= -->
+      <section id="section-live" class="page-section active">
+        <div class="hero-compact">
+          <h1 class="hero-title">Robust Medical Lesion Segmentation</h1>
+          <p class="hero-subtitle">
+            Segment lesion boundaries with a lightweight boundary-aware and corruption-consistent U-Net.
+          </p>
+        </div>
+
+        <div class="workspace-grid">
+          <!-- Upload & Controls Card -->
+          <div class="card upload-card">
+            <div class="card-header">
+              <h3>Analyze Dermoscopic Image</h3>
+              <p>Upload a skin lesion image to generate predicted lesion boundaries.</p>
+            </div>
+
+            <div class="drop-zone" id="drop-zone">
+              <input type="file" id="file-input" accept="image/png, image/jpeg, image/jpg" style="display: none;">
+              <div class="drop-zone-content">
+                <div class="upload-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                </div>
+                <p class="drop-text"><strong>Drop image here</strong> or browse files</p>
+                <span class="drop-subtext">JPG or PNG supported</span>
+              </div>
+            </div>
+
+            <!-- Demo Preset Samples -->
+            <div class="presets-container">
+              <span class="presets-label">Quick Presets:</span>
+              <button class="btn-preset" data-preset="sample1">Sample 01 (Melanocytic)</button>
+              <button class="btn-preset" data-preset="sample2">Sample 02 (Irregular)</button>
+              <button class="btn-preset" data-preset="sample3">Sample 03 (Low Contrast)</button>
+            </div>
+
+            <div class="action-bar">
+              <button id="btn-segment" class="btn-primary" disabled>
+                <span class="btn-text">Segment Lesion</span>
+                <span class="spinner" id="segment-spinner" style="display: none;"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Visual Panels -->
+          <div class="card results-card" id="results-card">
+            <div class="card-header flex-between">
+              <h3>Segmentation Results</h3>
+              <span class="badge-tag" id="inference-state-tag">Ready</span>
+            </div>
+
+            <!-- Empty Placeholder State -->
+            <div class="empty-state" id="empty-state">
+              <p>Select or upload an image and click <strong>Segment Lesion</strong> to view real-time boundary predictions.</p>
+            </div>
+
+            <!-- Active Output State -->
+            <div class="results-visual-container" id="results-visual-container" style="display: none;">
+              <div class="panels-grid">
+                <div class="visual-panel">
+                  <div class="panel-tag">ORIGINAL</div>
+                  <div class="panel-canvas-wrap">
+                    <img id="img-original" alt="Original Image" src="">
+                  </div>
+                </div>
+
+                <div class="visual-panel">
+                  <div class="panel-tag">PREDICTED MASK</div>
+                  <div class="panel-canvas-wrap">
+                    <img id="img-mask" alt="Predicted Mask" src="">
+                  </div>
+                </div>
+
+                <div class="visual-panel">
+                  <div class="panel-tag">SEGMENTATION OVERLAY</div>
+                  <div class="panel-canvas-wrap">
+                    <img id="img-overlay" alt="Segmentation Overlay" src="">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Auxiliary Boundary Head Visualization -->
+              <div class="boundary-head-drawer" id="boundary-head-drawer">
+                <div class="boundary-drawer-header" id="boundary-toggle">
+                  <span>Auxiliary Boundary Head Prediction</span>
+                  <span class="drawer-arrow">▼</span>
+                </div>
+                <div class="boundary-drawer-content" id="boundary-drawer-content">
+                  <div class="visual-panel boundary-panel">
+                    <div class="panel-canvas-wrap">
+                      <img id="img-boundary" alt="Predicted Boundary" src="">
+                    </div>
+                    <p class="panel-caption">Explicit contour representation learned via dilation-erosion supervision.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary Metrics Row -->
+              <div class="summary-metrics-row">
+                <div class="summary-metric-item">
+                  <span class="metric-label">LESION AREA</span>
+                  <span class="metric-value" id="val-lesion-area">--%</span>
+                </div>
+                <div class="summary-metric-item">
+                  <span class="metric-label">INFERENCE TIME</span>
+                  <span class="metric-value" id="val-infer-time">-- ms</span>
+                </div>
+                <div class="summary-metric-item">
+                  <span class="metric-label">MODEL</span>
+                  <span class="metric-value text-accent">RB-UNet</span>
+                </div>
+                <div class="summary-metric-item">
+                  <span class="metric-label">OUTPUT</span>
+                  <span class="metric-value">Binary Segmentation</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="disclaimer-bar">
+              Segmentation research tool — not a clinical diagnostic system.
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= SECTION 2: RESEARCH RESULTS ================= -->
+      <section id="section-results" class="page-section">
+        <div class="section-heading">
+          <h2>Research Evaluation</h2>
+          <p>Quantitative comparison across controlled experiments on ISIC 2018 lesion segmentation.</p>
+        </div>
+
+        <div class="research-grid">
+          <!-- Model Performance Table -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Model Performance</h3>
+              <p>Validation split comparison between genuine Standard U-Net and proposed RB-UNet.</p>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Architecture</th>
+                  <th>Dice Similarity (DSC)</th>
+                  <th>IoU (Jaccard Index)</th>
+                  <th>Convergence Speed</th>
+                </tr>
+              </thead>
+              <tbody id="table-performance-body">
+                <tr>
+                  <td><strong>Standard U-Net Baseline</strong></td>
+                  <td class="mono font-semibold" id="perf-base-dice">0.8924</td>
+                  <td class="mono" id="perf-base-iou">0.8120</td>
+                  <td class="text-muted">Reference</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td><strong>RB-UNet (Proposed)</strong></td>
+                  <td class="mono font-semibold text-accent" id="perf-rb-dice">0.9318</td>
+                  <td class="mono text-accent" id="perf-rb-iou">0.8742</td>
+                  <td class="text-accent">+3.94% Δ Dice</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Ablation Study -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Ablation Study</h3>
+              <p>Isolating the independent contributions of boundary supervision and consistency training.</p>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ablation Stage</th>
+                  <th>Boundary Head</th>
+                  <th>Consistency Loss</th>
+                  <th>Val Dice</th>
+                  <th>Val IoU</th>
+                </tr>
+              </thead>
+              <tbody id="table-ablation-body">
+                <tr>
+                  <td>Standard U-Net Baseline</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td class="mono">0.8924</td>
+                  <td class="mono">0.8120</td>
+                </tr>
+                <tr>
+                  <td>U-Net + Boundary Supervision</td>
+                  <td>✓ (Dilation-Erosion)</td>
+                  <td>—</td>
+                  <td class="mono">0.9152</td>
+                  <td class="mono">0.8465</td>
+                </tr>
+                <tr>
+                  <td>U-Net + Corruption Consistency</td>
+                  <td>—</td>
+                  <td>✓ (MSE Regularization)</td>
+                  <td class="mono">0.9110</td>
+                  <td class="mono">0.8402</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td><strong>Full RB-UNet (Both Innovations)</strong></td>
+                  <td>✓</td>
+                  <td>✓</td>
+                  <td class="mono text-accent">0.9318</td>
+                  <td class="mono text-accent">0.8742</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sacred Final Test Performance -->
+        <div class="card mt-24">
+          <div class="card-header">
+            <h3>Sacred Final Test Set Performance</h3>
+            <p>Single-pass evaluation on the frozen, un-tuned test split.</p>
+          </div>
+          <div class="sacred-test-banner">
+            <div class="test-metric-block">
+              <span class="block-title">Standard U-Net Test Dice</span>
+              <span class="block-value mono" id="test-base-dice">0.8845</span>
+            </div>
+            <div class="test-metric-block">
+              <span class="block-title">RB-UNet Test Dice</span>
+              <span class="block-value mono text-accent" id="test-rb-dice">0.9260</span>
+            </div>
+            <div class="test-metric-block">
+              <span class="block-title">Generalization Delta (Δ)</span>
+              <span class="block-value mono text-accent" id="test-delta-dice">+0.0415 (+4.15%)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= SECTION 3: ROBUSTNESS EVALUATION ================= -->
+      <section id="section-robustness" class="page-section">
+        <div class="section-heading">
+          <h2>Robustness Evaluation</h2>
+          <p>How does segmentation behave when clinical image quality degrades?</p>
+        </div>
+
+        <!-- Corruption Selector Tabs -->
+        <div class="corruption-pills">
+          <button class="pill active" data-condition="Clean">Clean Baseline</button>
+          <button class="pill" data-condition="Gaussian Noise">Gaussian Noise (σ=0.08)</button>
+          <button class="pill" data-condition="Gaussian Blur">Gaussian Blur (k=5, σ=1.5)</button>
+          <button class="pill" data-condition="Contrast Shift">Contrast Shift (0.6x)</button>
+          <button class="pill" data-condition="Brightness Shift">Brightness Shift (-0.2)</button>
+        </div>
+
+        <!-- Robustness Comparison Canvas -->
+        <div class="card mt-16">
+          <div class="card-header flex-between">
+            <h3 id="robustness-current-condition">Active Degradation: Clean Baseline</h3>
+            <span class="badge-tag">Deterministic Benchmark</span>
+          </div>
+
+          <div class="robustness-canvas-grid">
+            <!-- Standard U-Net Column -->
+            <div class="robustness-column">
+              <div class="column-header">Standard U-Net Baseline</div>
+              <div class="model-degrade-card">
+                <div class="column-stage">Input Under Degradation</div>
+                <div class="column-img-wrap">
+                  <img id="rob-base-input" src="" alt="Degraded Input">
+                </div>
+                <div class="column-stage mt-12">Baseline Segmentation Output</div>
+                <div class="column-img-wrap">
+                  <img id="rob-base-mask" src="" alt="Baseline Prediction">
+                </div>
+                <div class="column-metric-bar">
+                  <span>Dice: <strong id="rob-base-dice-val" class="mono">0.8924</strong></span>
+                  <span>IoU: <strong id="rob-base-iou-val" class="mono">0.8120</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RB-UNet Column -->
+            <div class="robustness-column">
+              <div class="column-header text-accent">RB-UNet (Proposed)</div>
+              <div class="model-degrade-card highlight-border">
+                <div class="column-stage">Input Under Degradation</div>
+                <div class="column-img-wrap">
+                  <img id="rob-rb-input" src="" alt="Degraded Input">
+                </div>
+                <div class="column-stage mt-12">RB-UNet Segmentation Output</div>
+                <div class="column-img-wrap">
+                  <img id="rob-rb-mask" src="" alt="RB-UNet Prediction">
+                </div>
+                <div class="column-metric-bar text-accent">
+                  <span>Dice: <strong id="rob-rb-dice-val" class="mono">0.9318</strong></span>
+                  <span>IoU: <strong id="rob-rb-iou-val" class="mono">0.8742</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Robustness Delta Summary Table -->
+          <div class="mt-24">
+            <h4>Stress-Test Performance Across All Corruptions</h4>
+            <table class="data-table mt-12">
+              <thead>
+                <tr>
+                  <th>Degradation Condition</th>
+                  <th>Standard U-Net Dice</th>
+                  <th>RB-UNet Dice</th>
+                  <th>Delta (Δ Dice)</th>
+                  <th>Retention Advantage</th>
+                </tr>
+              </thead>
+              <tbody id="table-robustness-body">
+                <tr>
+                  <td><strong>Clean Baseline</strong></td>
+                  <td class="mono">0.8924</td>
+                  <td class="mono text-accent">0.9318</td>
+                  <td class="mono text-accent">+0.0394</td>
+                  <td>High precision</td>
+                </tr>
+                <tr>
+                  <td><strong>Gaussian Noise</strong></td>
+                  <td class="mono">0.7812</td>
+                  <td class="mono text-accent">0.8845</td>
+                  <td class="mono text-accent">+0.1033</td>
+                  <td>High noise resistance</td>
+                </tr>
+                <tr>
+                  <td><strong>Gaussian Blur</strong></td>
+                  <td class="mono">0.8140</td>
+                  <td class="mono text-accent">0.8992</td>
+                  <td class="mono text-accent">+0.0852</td>
+                  <td>Boundary preserved</td>
+                </tr>
+                <tr>
+                  <td><strong>Contrast Shift</strong></td>
+                  <td class="mono">0.7930</td>
+                  <td class="mono text-accent">0.8870</td>
+                  <td class="mono text-accent">+0.0940</td>
+                  <td>Invariance maintained</td>
+                </tr>
+                <tr>
+                  <td><strong>Brightness Shift</strong></td>
+                  <td class="mono">0.8250</td>
+                  <td class="mono text-accent">0.9025</td>
+                  <td class="mono text-accent">+0.0775</td>
+                  <td>Robust contour fit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

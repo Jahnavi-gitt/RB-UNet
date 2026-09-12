@@ -19,12 +19,41 @@ from src.training.checkpoint import load_checkpoint
 from src.utils.visualization import create_overlay, plot_comparative_panel
 
 
+def clean_isolated_artifacts(mask_bin: np.ndarray, min_size: int = 20) -> np.ndarray:
+    """Removes isolated stray prediction flecks while preserving real multi-component lesions."""
+    import scipy.ndimage as ndi
+    labeled, num_features = ndi.label(mask_bin > 0)
+    if num_features <= 1:
+        return mask_bin
+    counts = np.bincount(labeled.ravel())
+    clean_mask = np.zeros_like(mask_bin)
+    for idx in range(1, num_features + 1):
+        if counts[idx] >= min_size:
+            clean_mask[labeled == idx] = 1
+    if clean_mask.sum() == 0 and mask_bin.sum() > 0:
+        largest_idx = np.argmax(counts[1:]) + 1
+        clean_mask[labeled == largest_idx] = 1
+    return clean_mask
+
+
+def draw_boundary_contour(image_np: np.ndarray, mask_bin: np.ndarray, color=(14, 165, 233), thickness: int = 2) -> np.ndarray:
+    """Renders a crisp boundary contour directly on the RGB image."""
+    from scipy.ndimage import binary_dilation
+    struct = np.ones((3, 3), dtype=bool)
+    dilated = binary_dilation(mask_bin > 0, structure=struct, iterations=thickness)
+    contour = dilated ^ (mask_bin > 0)
+    out = image_np.copy()
+    out[contour] = color
+    return out
+
+
 def run_inference(
     image_path: str,
     checkpoint_path: Optional[str] = None,
     output_dir: str = "outputs/qualitative",
     device_name: str = "auto",
     image_size: int = 256,
+    threshold: float = 0.70,
 ):
     if device_name == "auto":
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -63,22 +92,31 @@ def run_inference(
         bnd_logits = None
 
     prob = torch.sigmoid(seg_logits).squeeze().cpu().numpy()
-    pred_mask = (prob > 0.5).astype(np.uint8)
+    pred_mask_256 = (prob > threshold).astype(np.uint8)
+    pred_mask_256 = clean_isolated_artifacts(pred_mask_256, min_size=20)
 
-    # Compute lesion area %
+    # Resize mask back to ORIGINAL image dimensions using NEAREST interpolation
+    mask_pil_256 = Image.fromarray(pred_mask_256 * 255)
+    mask_pil_orig = mask_pil_256.resize((orig_w, orig_h), resample=Image.Resampling.NEAREST)
+    pred_mask = (np.array(mask_pil_orig) > 127).astype(np.uint8)
+
+    # Compute genuine lesion area % on original dimensions
     lesion_pixels = int(np.sum(pred_mask))
     total_pixels = pred_mask.size
     lesion_area_pct = (lesion_pixels / total_pixels) * 100.0
 
-    # Boundary map
+    # Boundary map resized back to original dimensions
     bnd_map = None
     if bnd_logits is not None:
         bnd_prob = torch.sigmoid(bnd_logits).squeeze().cpu().numpy()
-        bnd_map = (bnd_prob > 0.5).astype(np.uint8)
+        bnd_mask_256 = (bnd_prob > threshold).astype(np.uint8)
+        bnd_pil_orig = Image.fromarray(bnd_mask_256 * 255).resize((orig_w, orig_h), resample=Image.Resampling.NEAREST)
+        bnd_map = (np.array(bnd_pil_orig) > 127).astype(np.uint8)
 
-    # Generate overlay
-    img_np = np.array(resized)
-    overlay_np = create_overlay(img_np, pred_mask, color=(0, 210, 180), alpha=0.45)
+    # Generate overlay and contour on the original RGB image (pixel-aligned)
+    img_np = np.array(raw_img)
+    overlay_np = create_overlay(img_np, pred_mask, color=(14, 165, 233), alpha=0.45)
+    contour_np = draw_boundary_contour(img_np, pred_mask, color=(14, 165, 233), thickness=2)
 
     # Save output artifacts
     out_path = Path(output_dir)
@@ -92,17 +130,24 @@ def run_inference(
     Image.fromarray(pred_mask * 255).save(mask_file)
     Image.fromarray(overlay_np).save(overlay_file)
 
+    # For panel comparison, use display-sized version to fit nicely in figure
+    disp_size = (512, int(512 * orig_h / orig_w))
+    img_disp = np.array(raw_img.resize(disp_size, resample=Image.Resampling.BILINEAR))
+    mask_disp = np.array(mask_pil_orig.resize(disp_size, resample=Image.Resampling.NEAREST))
+    bnd_disp = np.array(Image.fromarray(bnd_map).resize(disp_size, resample=Image.Resampling.NEAREST)) if bnd_map is not None else None
+
     plot_comparative_panel(
-        image=img_np,
+        image=img_disp,
         ground_truth=None,
         baseline_pred=None,
-        rb_unet_pred=pred_mask,
-        boundary_pred=bnd_map,
+        rb_unet_pred=mask_disp,
+        boundary_pred=bnd_disp,
         save_path=str(panel_file),
         title=f"Inference: {stem} | Lesion Area: {lesion_area_pct:.1f}% | Time: {inference_time_ms:.1f}ms",
     )
 
     print(f"\n[Inference Result for {stem}]")
+    print(f"  Original Size:      {orig_w}x{orig_h}")
     print(f"  Lesion Area:        {lesion_area_pct:.2f}%")
     print(f"  Inference Time:     {inference_time_ms:.1f} ms")
     print(f"  Predicted Mask:     {mask_file}")

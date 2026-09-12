@@ -46,14 +46,18 @@ def run_robustness_test(
     dataset = ISICDataset(val_samples, transform=val_tf)
     loader = DataLoader(dataset, batch_size=2 if smoke_test else 4, shuffle=False, num_workers=0)
 
-    features = [16, 32, 64, 128, 256] if smoke_test else cfg.get("model", {}).get("features", [64, 128, 256, 512, 1024])
-    base_model = UNet(in_channels=3, out_channels=1, features=features).to(device)
-    rb_model = RBUNet(in_channels=3, out_channels=1, features=features, boundary_head_channels=16 if smoke_test else 32).to(device)
+    from src.training.checkpoint import build_model_from_checkpoint
 
     if os.path.exists(baseline_ckpt):
-        load_checkpoint(baseline_ckpt, base_model, device=str(device))
+        base_model = build_model_from_checkpoint(baseline_ckpt, device=str(device))
+    else:
+        base_model = UNet(in_channels=3, out_channels=1, features=features).to(device)
+
     if os.path.exists(rb_ckpt):
-        load_checkpoint(rb_ckpt, rb_model, device=str(device))
+        rb_model = build_model_from_checkpoint(rb_ckpt, device=str(device))
+    else:
+        bnd_channels = cfg.get("model", {}).get("boundary_head_channels", 16)
+        rb_model = RBUNet(in_channels=3, out_channels=1, features=features, boundary_head_channels=bnd_channels).to(device)
 
     benchmark = RobustnessBenchmark(baseline_model=base_model, rb_unet_model=rb_model, device=device)
     results = benchmark.run_benchmark(loader)

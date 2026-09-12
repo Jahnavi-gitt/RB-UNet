@@ -1,8 +1,8 @@
 {
   "experiment": "baseline_unet",
   "model": "UNet",
-  "best_val_dice": 0.29286956511552364,
-  "epochs": 2,
-  "elapsed_seconds": 1.5289108753204346,
+  "best_val_dice": 0.7370924751322835,
+  "epochs": 8,
+  "elapsed_seconds": 143.27905249595642,
   "checkpoint": "outputs/checkpoints/baseline_unet_latest.pth"
 }

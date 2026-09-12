@@ -1,23 +1,34 @@
 {
   "dataset_root": "data/raw",
-  "exists": false,
+  "exists": true,
   "splits": {
-    "train_count": 0,
-    "val_count": 0,
-    "test_count": 0
+    "train_count": 60,
+    "val_count": 15,
+    "test_count": 5
   },
   "directories": {
-    "train_images": null,
-    "train_masks": null,
-    "val_images": null,
-    "val_masks": null,
-    "test_images": null,
-    "test_masks": null
+    "train_images": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1-2_Training_Input",
+    "train_masks": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1_Training_GroundTruth",
+    "val_images": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1-2_Validation_Input",
+    "val_masks": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1_Validation_GroundTruth",
+    "test_images": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1-3_Test_Input",
+    "test_masks": "C:\\Users\\ganga\\Downloads\\hackdl\\data\\raw\\ISIC2018_Task1_Test_GroundTruth"
   },
   "orphans": {
     "train": 0,
     "val": 0,
     "test": 0
   },
-  "sample_properties": {}
+  "sample_properties": {
+    "image_dimensions": [
+      1022,
+      767
+    ],
+    "image_mode": "RGB",
+    "mask_dimensions": [
+      1022,
+      767
+    ],
+    "mask_mode": "L"
+  }
 }

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ISIC_0012255",
+    "label": "Small Focal Lesion",
+    "difficulty": "High - Subtle scale",
+    "original_url": "/outputs/qualitative/comparison_suite/ISIC_0012255_orig.jpg",
+    "gt_url": "/outputs/qualitative/comparison_suite/ISIC_0012255_gt.png",
+    "baseline_url": "/outputs/qualitative/comparison_suite/ISIC_0012255_base.png",
+    "rb_unet_url": "/outputs/qualitative/comparison_suite/ISIC_0012255_rb.png",
+    "baseline_dice": 0.3145,
+    "baseline_iou": 0.1866,
+    "rb_unet_dice": 0.9146,
+    "rb_unet_iou": 0.8426,
+    "delta_dice": 0.6001
+  },
+  {
+    "id": "ISIC_0012585",
+    "label": "Irregular Scalloped Margin",
+    "difficulty": "High - Boundary complexity",
+    "original_url": "/outputs/qualitative/comparison_suite/ISIC_0012585_orig.jpg",
+    "gt_url": "/outputs/qualitative/comparison_suite/ISIC_0012585_gt.png",
+    "baseline_url": "/outputs/qualitative/comparison_suite/ISIC_0012585_base.png",
+    "rb_unet_url": "/outputs/qualitative/comparison_suite/ISIC_0012585_rb.png",
+    "baseline_dice": 0.8171,
+    "baseline_iou": 0.6907,
+    "rb_unet_dice": 0.9077,
+    "rb_unet_iou": 0.8311,
+    "delta_dice": 0.0907
+  },
+  {
+    "id": "ISIC_0015370",
+    "label": "Challenging Asymmetric Border",
+    "difficulty": "Moderate - Multi-lobular",
+    "original_url": "/outputs/qualitative/comparison_suite/ISIC_0015370_orig.jpg",
+    "gt_url": "/outputs/qualitative/comparison_suite/ISIC_0015370_gt.png",
+    "baseline_url": "/outputs/qualitative/comparison_suite/ISIC_0015370_base.png",
+    "rb_unet_url": "/outputs/qualitative/comparison_suite/ISIC_0015370_rb.png",
+    "baseline_dice": 0.905,
+    "baseline_iou": 0.8265,
+    "rb_unet_dice": 0.9791,
+    "rb_unet_iou": 0.9591,
+    "delta_dice": 0.0741
+  },
+  {
+    "id": "ISIC_0015480",
+    "label": "Low Contrast Lesion",
+    "difficulty": "High - Faint gradient",
+    "original_url": "/outputs/qualitative/comparison_suite/ISIC_0015480_orig.jpg",
+    "gt_url": "/outputs/qualitative/comparison_suite/ISIC_0015480_gt.png",
+    "baseline_url": "/outputs/qualitative/comparison_suite/ISIC_0015480_base.png",
+    "rb_unet_url": "/outputs/qualitative/comparison_suite/ISIC_0015480_rb.png",
+    "baseline_dice": 0.7766,
+    "baseline_iou": 0.6348,
+    "rb_unet_dice": 0.7646,
+    "rb_unet_iou": 0.6189,
+    "delta_dice": -0.012
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "Baseline U-Net": [
+    {
+      "threshold": 0.3,
+      "val_dice": 0.4455,
+      "val_iou": 0.3259
+    },
+    {
+      "threshold": 0.35,
+      "val_dice": 0.4748,
+      "val_iou": 0.3519
+    },
+    {
+      "threshold": 0.4,
+      "val_dice": 0.4983,
+      "val_iou": 0.3742
+    },
+    {
+      "threshold": 0.45,
+      "val_dice": 0.5369,
+      "val_iou": 0.4153
+    },
+    {
+      "threshold": 0.5,
+      "val_dice": 0.5749,
+      "val_iou": 0.4596
+    },
+    {
+      "threshold": 0.55,
+      "val_dice": 0.5989,
+      "val_iou": 0.4883
+    },
+    {
+      "threshold": 0.6,
+      "val_dice": 0.6208,
+      "val_iou": 0.5133
+    },
+    {
+      "threshold": 0.65,
+      "val_dice": 0.6473,
+      "val_iou": 0.5432
+    },
+    {
+      "threshold": 0.7,
+      "val_dice": 0.6822,
+      "val_iou": 0.5821
+    }
+  ],
+  "RB-UNet": [
+    {
+      "threshold": 0.3,
+      "val_dice": 0.6223,
+      "val_iou": 0.495
+    },
+    {
+      "threshold": 0.35,
+      "val_dice": 0.6589,
+      "val_iou": 0.5396
+    },
+    {
+      "threshold": 0.4,
+      "val_dice": 0.675,
+      "val_iou": 0.5594
+    },
+    {
+      "threshold": 0.45,
+      "val_dice": 0.6949,
+      "val_iou": 0.586
+    },
+    {
+      "threshold": 0.5,
+      "val_dice": 0.72,
+      "val_iou": 0.6227
+    },
+    {
+      "threshold": 0.55,
+      "val_dice": 0.7373,
+      "val_iou": 0.6483
+    },
+    {
+      "threshold": 0.6,
+      "val_dice": 0.7457,
+      "val_iou": 0.6604
+    },
+    {
+      "threshold": 0.65,
+      "val_dice": 0.7488,
+      "val_iou": 0.6634
+    },
+    {
+      "threshold": 0.7,
+      "val_dice": 0.7497,
+      "val_iou": 0.6641
+    }
+  ]
+}

@@ -59,18 +59,23 @@ def run_final_test(
     test_ds = ISICDataset(test_samples, transform=test_tf)
     loader = DataLoader(test_ds, batch_size=2 if smoke_test else 4, shuffle=False, num_workers=0)
 
-    features = [16, 32, 64, 128, 256] if smoke_test else cfg.get("model", {}).get("features", [64, 128, 256, 512, 1024])
+    features = [16, 32, 64, 128, 256] if smoke_test else cfg.get("model", {}).get("features", [16, 32, 64, 128, 256])
+    bnd_channels = 16 if smoke_test else cfg.get("model", {}).get("boundary_head_channels", 16)
+
+    from src.training.checkpoint import build_model_from_checkpoint
 
     # 1. Baseline Evaluation
-    base_model = UNet(in_channels=3, out_channels=1, features=features).to(device)
     if os.path.exists(baseline_ckpt):
-        load_checkpoint(baseline_ckpt, base_model, device=str(device))
+        base_model = build_model_from_checkpoint(baseline_ckpt, device=str(device))
+    else:
+        base_model = UNet(in_channels=3, out_channels=1, features=features).to(device)
     base_eval = Evaluator(base_model, device=device).evaluate(loader, desc="Baseline Test")
 
     # 2. RB-UNet Evaluation
-    rb_model = RBUNet(in_channels=3, out_channels=1, features=features, boundary_head_channels=16 if smoke_test else 32).to(device)
     if os.path.exists(rb_ckpt):
-        load_checkpoint(rb_ckpt, rb_model, device=str(device))
+        rb_model = build_model_from_checkpoint(rb_ckpt, device=str(device))
+    else:
+        rb_model = RBUNet(in_channels=3, out_channels=1, features=features, boundary_head_channels=bnd_channels).to(device)
     rb_eval = Evaluator(rb_model, device=device).evaluate(loader, desc="RB-UNet Test")
 
     results = {

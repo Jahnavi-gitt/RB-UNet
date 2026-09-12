@@ -5,7 +5,7 @@ defaults:
 
 model:
   name: "standard_unet"
-  features: [64, 128, 256, 512, 1024]
+  features: [16, 32, 64, 128, 256]
 
 loss:
   dice_weight: 1.0

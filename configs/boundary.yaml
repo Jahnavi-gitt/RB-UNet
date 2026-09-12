@@ -5,8 +5,8 @@ defaults:
 
 model:
   name: "rb_unet"
-  features: [64, 128, 256, 512, 1024]
-  boundary_head_channels: 32
+  features: [16, 32, 64, 128, 256]
+  boundary_head_channels: 16
 
 loss:
   dice_weight: 1.0

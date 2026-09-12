@@ -89,7 +89,11 @@ def execute_pipeline(
     demo_dir.mkdir(parents=True, exist_ok=True)
 
     # Run inference on sample image
-    sample_images = list(Path("outputs/smoke_test_data").glob("*.jpg"))
+    if smoke_test:
+        sample_images = list(Path("outputs/smoke_test_data").glob("*.jpg"))
+    else:
+        sample_images = list(Path("outputs/sample_images").glob("*.jpg")) or \
+                        list(Path("data/raw/ISIC2018_Task1-2_Validation_Input").glob("*.jpg"))
     if sample_images:
         demo_sample = str(sample_images[0])
         infer_res = run_inference(

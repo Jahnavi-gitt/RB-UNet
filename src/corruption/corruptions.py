@@ -6,9 +6,10 @@ import torch
 import torchvision.transforms.functional as TF
 
 
-def apply_gaussian_noise(image: torch.Tensor, std: float = 0.08) -> torch.Tensor:
-    """Add zero-mean Gaussian noise to tensor [B, C, H, W] or [C, H, W]."""
-    noise = torch.randn_like(image) * std
+def apply_gaussian_noise(image: torch.Tensor, std: float = 0.08, seed: int = 42) -> torch.Tensor:
+    """Add zero-mean Gaussian noise to tensor [B, C, H, W] with fixed reproducible seed."""
+    gen = torch.Generator(device=image.device).manual_seed(seed)
+    noise = torch.randn(image.shape, generator=gen, device=image.device, dtype=image.dtype) * std
     return image + noise
 
 

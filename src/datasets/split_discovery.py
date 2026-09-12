@@ -98,10 +98,14 @@ def discover_dataset_splits(dataset_root: str) -> Dict:
     all_subdirs = [d for d in root_path.rglob("*") if d.is_dir()] + [root_path]
 
     def _find_dir_by_pattern(patterns: List[str]) -> Optional[Path]:
-        for d in all_subdirs:
-            d_name = d.name.lower()
-            for pat in patterns:
-                if pat.lower() in d_name:
+        # Iterate over patterns first so specific patterns have strict priority over general fallbacks
+        for pat in patterns:
+            pat_lower = pat.lower()
+            for d in all_subdirs:
+                if pat_lower == d.name.lower():
+                    return d
+            for d in all_subdirs:
+                if pat_lower in d.name.lower():
                     return d
         return None
 

@@ -1,0 +1,9 @@
+.git
+.venv
+.pytest_cache
+data/
+tests/
+docs/
+outputs/smoke_test_data/
+outputs/checkpoints/sanity_test.pth
+outputs/checkpoints/ablation_*.pth

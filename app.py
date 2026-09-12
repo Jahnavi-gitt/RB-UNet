@@ -599,7 +599,7 @@ handler = RBUNetServerHandler
 # Top-Level WSGI Application (Vercel 'app' Export & Production Gateway)
 # ---------------------------------------------------------------------------
 
-def app(environ, start_response):
+def wsgi_app(environ, start_response):
     """Top-level WSGI callable for Vercel and WSGI servers."""
     path = environ.get("PATH_INFO", "")
     query_string = environ.get("QUERY_STRING", "")
@@ -719,8 +719,12 @@ def app(environ, start_response):
         return [json.dumps({"error": f"Method {method} not allowed"}).encode("utf-8")]
 
 
-# Alias for applications expecting 'application'
-application = app
+# Explicit top-level entrypoint variables for Vercel
+app = wsgi_app
+application = wsgi_app
+handler = RBUNetServerHandler
+
+__all__ = ["app", "application", "handler", "RBUNetServerHandler", "serve"]
 
 
 # ---------------------------------------------------------------------------

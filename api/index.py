@@ -1,6 +1,6 @@
 """Vercel Serverless Function entry point for RB-UNet.
 
-Exposes both 'app' (WSGI application) and 'handler' (BaseHTTPRequestHandler)
+Exposes 'app', 'application', and 'handler' variables
 to ensure seamless routing across any Vercel Python runtime configuration.
 """
 
@@ -12,16 +12,19 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+import app as app_module
 from app import (
-    app,
-    application,
-    handler,
     RBUNetServerHandler,
     get_status_payload,
     get_results_payload,
     segment_image_payload,
     live_robustness_payload,
 )
+
+# Explicit top-level entrypoint variables for Vercel
+app = app_module.app
+application = app_module.application
+handler = app_module.handler
 
 __all__ = [
     "app",

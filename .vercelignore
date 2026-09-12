@@ -1,7 +1,9 @@
-# Exclude all Python backend code, ML weights, and environments from Vercel static build
+# Exclude heavy ML backend code, PyTorch dependencies, and weights from Vercel deployment
 app.py
-*.py
-api/
+evaluate.py
+infer.py
+run.py
+train.py
 src/
 scripts/
 tests/

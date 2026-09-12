@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [tool.vercel]
-entrypoint = "app:app"
+entrypoint = "api/index.py:app"
 
 [[tool.uv.index]]
 name = "pytorch-cpu"

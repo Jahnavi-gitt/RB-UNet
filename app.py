@@ -592,7 +592,9 @@ class RBUNetServerHandler(SimpleHTTPRequestHandler):
 
 
 # Export handler for Vercel BaseHTTPRequestHandler detection
-handler = RBUNetServerHandler
+class handler(RBUNetServerHandler):
+    """Vercel BaseHTTPRequestHandler entrypoint."""
+    pass
 
 
 # ---------------------------------------------------------------------------

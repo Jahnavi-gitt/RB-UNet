@@ -24,7 +24,10 @@ from app import (
 # Explicit top-level entrypoint variables for Vercel
 app = app_module.app
 application = app_module.application
-handler = app_module.handler
+
+class handler(RBUNetServerHandler):
+    """Vercel BaseHTTPRequestHandler entrypoint."""
+    pass
 
 __all__ = [
     "app",
